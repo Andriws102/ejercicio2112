@@ -14,6 +14,7 @@ const obtenerPersonas = () => {
         data.forEach(persona => {
             const newRow = table.insertRow();
             newRow.innerHTML = `
+                <td>${persona.id}</td>
                 <td>${persona.nombre}</td>
                 <td>${persona.apellido}</td>
                 <td>${persona.telefono}</td>
@@ -62,10 +63,11 @@ document.getElementById('personForm').addEventListener('submit', function(e) {
     } else {
         // Actualizar fila existente
         const row = table.rows[editRowIndex-1];
-        row.cells[0].innerText = firstName;
-        row.cells[1].innerText = lastName;
-        row.cells[2].innerText = email;
-        row.cells[3].innerText = phone;
+        row.cells[0].innerText = id;
+        row.cells[1].innerText = firstName;
+        row.cells[2].innerText = lastName;
+        row.cells[3].innerText = email;
+        row.cells[4].innerText = phone;
         editRowIndex = -1; // Resetear el índice de edición
     }
 
@@ -76,12 +78,12 @@ document.getElementById('personForm').addEventListener('submit', function(e) {
 document.getElementById('personTable').addEventListener('click', function(e) {
     if (e.target.classList.contains('edit-btn')) {
         const row = e.target.parentElement.parentElement;
-        document.getElementById('firstName').value = row.cells[0].innerText;
-        document.getElementById('lastName').value = row.cells[1].innerText;
-        document.getElementById('email').value = row.cells[2].innerText;
-        document.getElementById('phone').value = row.cells[3].innerText;
+        document.getElementById('firstName').value = row.cells[1].innerText;
+        document.getElementById('lastName').value = row.cells[2].innerText;
+        document.getElementById('email').value = row.cells[3].innerText;
+        document.getElementById('phone').value = row.cells[4].innerText;
 
-        editRowIndex = row.rowIndex; // Guardar el índice de la fila que se está editando
+        editRowIndex = row.cells[0].innerText; // Guardar el índice de la fila que se está editando
     }
 
     // Función para manejar el clic en el botón "Eliminar"
