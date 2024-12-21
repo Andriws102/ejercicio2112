@@ -17,4 +17,19 @@ router.get("/personas", function(request, response){
     }); 
 })
 
+router.post("/personas", function(request, response){
+    const datos = request.body;
+
+    const query = `INSERT INTO personas (id, nombre, apellido, correo, telefono) 
+    VALUES (NULL, '${datos.nombre}', '${datos.apellido}', '${datos.correo}', '${datos.telefono}')`
+
+    connection.execute(query, null, function(error, result){
+        if(error){
+            console.error("Error insertando la persona", error)
+        }else{
+            response.json({message: "Persona insertada correctamente", id: result.insertId})
+        }
+    })
+})
+
 module.exports = router;

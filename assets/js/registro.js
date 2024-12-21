@@ -1,5 +1,32 @@
 let editRowIndex = -1; // Variable para almacenar el índice de la fila que se está editando
 
+const obtenerPersonas = () => {
+    const url = "http://localhost:3001/personas"
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(response => response.json())
+    .then(data => {
+        const table = document.getElementById('personTable').getElementsByTagName('tbody')[0];
+
+        data.forEach(persona => {
+            const newRow = table.insertRow();
+            newRow.innerHTML = `
+                <td>${persona.nombre}</td>
+                <td>${persona.apellido}</td>
+                <td>${persona.telefono}</td>
+                <td>${persona.correo}</td>
+                <td>
+                    <button class="edit-btn">Editar</button>
+                    <button class="delete-btn">Eliminar</button>
+                </td>
+            `;
+        });
+    })
+}
+
 document.getElementById('personForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
@@ -12,17 +39,25 @@ document.getElementById('personForm').addEventListener('submit', function(e) {
 
     if (editRowIndex === -1) {
         // Agregar nueva fila
-        const newRow = table.insertRow();
-        newRow.innerHTML = `
-            <td>${firstName}</td>
-            <td>${lastName}</td>
-            <td>${email}</td>
-            <td>${phone}</td>
-            <td>
-                <button class="edit-btn">Editar</button>
-                <button class="delete-btn">Eliminar</button>
-            </td>
-        `;
+        const urlInsert = "http://localhost:3001/personas"
+        fetch(urlInsert, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                nombre: firstName,
+                apellido: lastName,
+                correo: email,
+                telefono: phone
+            })
+        }).then(response => response.json())
+        .then(data => {
+            if(data.message){
+                alert(data.message);
+            }
+            obtenerPersonas();
+        });
     } else {
         // Actualizar fila existente
         const row = table.rows[editRowIndex-1];
@@ -54,32 +89,5 @@ document.getElementById('personTable').addEventListener('click', function(e) {
         row.remove(); // Eliminar la fila
     }
 });
-
-const obtenerPersonas = () => {
-    const url = "http://localhost:3001/personas"
-    fetch(url, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    }).then(response => response.json())
-    .then(data => {
-        const table = document.getElementById('personTable').getElementsByTagName('tbody')[0];
-
-        data.forEach(persona => {
-            const newRow = table.insertRow();
-            newRow.innerHTML = `
-                <td>${persona.nombre}</td>
-                <td>${persona.apellido}</td>
-                <td>${persona.telefono}</td>
-                <td>${persona.correo}</td>
-                <td>
-                    <button class="edit-btn">Editar</button>
-                    <button class="delete-btn">Eliminar</button>
-                </td>
-            `;
-        });
-    })
-}
 
 obtenerPersonas();
