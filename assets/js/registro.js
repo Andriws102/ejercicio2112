@@ -54,3 +54,32 @@ document.getElementById('personTable').addEventListener('click', function(e) {
         row.remove(); // Eliminar la fila
     }
 });
+
+const obtenerPersonas = () => {
+    const url = "http://localhost:3001/personas"
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(response => response.json())
+    .then(data => {
+        const table = document.getElementById('personTable').getElementsByTagName('tbody')[0];
+
+        data.forEach(persona => {
+            const newRow = table.insertRow();
+            newRow.innerHTML = `
+                <td>${persona.nombre}</td>
+                <td>${persona.apellido}</td>
+                <td>${persona.telefono}</td>
+                <td>${persona.correo}</td>
+                <td>
+                    <button class="edit-btn">Editar</button>
+                    <button class="delete-btn">Eliminar</button>
+                </td>
+            `;
+        });
+    })
+}
+
+obtenerPersonas();
