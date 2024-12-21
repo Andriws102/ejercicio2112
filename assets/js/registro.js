@@ -10,7 +10,7 @@ const obtenerPersonas = () => {
     }).then(response => response.json())
     .then(data => {
         const table = document.getElementById('personTable').getElementsByTagName('tbody')[0];
-
+        table.innerHTML = "";
         data.forEach(persona => {
             const newRow = table.insertRow();
             newRow.innerHTML = `
@@ -56,6 +56,7 @@ document.getElementById('personForm').addEventListener('submit', function(e) {
             if(data.message){
                 alert(data.message);
             }
+            //window.location.reload();
             obtenerPersonas();
         });
     } else {
