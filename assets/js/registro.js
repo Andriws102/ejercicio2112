@@ -63,7 +63,7 @@ document.getElementById('personForm').addEventListener('submit', function(e) {
     } else {
         // Actualizar fila existente
         const row = table.rows[editRowIndex-1];
-        row.cells[0].innerText = id;
+        row.cells[0].innerText = editRowIndex;
         row.cells[1].innerText = firstName;
         row.cells[2].innerText = lastName;
         row.cells[3].innerText = email;
@@ -80,10 +80,10 @@ document.getElementById('personTable').addEventListener('click', function(e) {
         const row = e.target.parentElement.parentElement;
         document.getElementById('firstName').value = row.cells[1].innerText;
         document.getElementById('lastName').value = row.cells[2].innerText;
-        document.getElementById('email').value = row.cells[3].innerText;
-        document.getElementById('phone').value = row.cells[4].innerText;
+        document.getElementById('email').value = row.cells[4].innerText;
+        document.getElementById('phone').value = row.cells[3].innerText;
 
-        editRowIndex = row.cells[0].innerText; // Guardar el índice de la fila que se está editando
+        editRowIndex = row.rowIndex; // Guardar el índice de la fila que se está editando
     }
 
     // Función para manejar el clic en el botón "Eliminar"
